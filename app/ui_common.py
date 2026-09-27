@@ -90,6 +90,26 @@ div[data-testid="stForm"]{background:#fff!important;border:0!important;border-ra
 .st-key-mood_selector [role="radiogroup"] label:has(input:checked){background:var(--secondary-container)!important}
 .st-key-mood_selector [role="radiogroup"] label p{color:var(--text)!important;font:500 12px/16px 'Manrope',sans-serif!important}
 
+/* Stitch mood cards: three large, clear reflection choices */
+[class*="st-key-mood_selector"] [role="radiogroup"]{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:.5rem!important;width:100%!important}
+[class*="st-key-mood_selector"] [role="radiogroup"] label{display:flex!important;justify-content:center!important;align-items:center!important;min-height:74px!important;padding:.8rem .5rem!important;background:var(--surface-low)!important;border:0!important;border-radius:12px!important;box-shadow:none!important}
+[class*="st-key-mood_selector"] [role="radiogroup"] label:hover{background:var(--surface-container)!important}
+[class*="st-key-mood_selector"] [role="radiogroup"] label:has(input:checked){background:var(--secondary-container)!important;box-shadow:0 1px 4px rgba(27,67,50,.08)!important}
+[class*="st-key-mood_selector"] [role="radiogroup"] label > div:first-child{display:none!important}
+[class*="st-key-mood_selector"] [role="radiogroup"] label p{color:var(--text)!important;-webkit-text-fill-color:var(--text)!important;font:600 13px/18px 'Manrope',sans-serif!important;text-align:center!important}
+[class*="st-key-mood_selector"] [role="radiogroup"] label:has(input:checked) p{color:#204f3c!important;-webkit-text-fill-color:#204f3c!important}
+
+/* Full-height Ask OnKo companion, matching Stitch's 740px right rail */
+[class*="st-key-onko_chat_panel"]{min-height:740px!important;background:#fff!important;border-radius:12px!important;border:0!important;box-shadow:0 5px 18px rgba(27,67,50,.10)!important;overflow:hidden!important}
+[class*="st-key-onko_chat_panel"] > div{min-height:100%!important}
+[class*="st-key-onko_chat_panel"] [data-testid="stVerticalBlock"]{gap:.8rem!important}
+.chat-head{margin:-.75rem -.75rem .25rem!important;padding:1rem!important;background:var(--surface-container)!important;border-radius:10px 10px 0 0}
+.chat-head-row{display:flex;align-items:center;justify-content:space-between;gap:.75rem}
+.chat-head-title{display:flex;align-items:center;gap:.55rem;font:600 18px/26px 'Manrope',sans-serif;color:var(--primary)}
+.chat-head-icon{width:32px;height:32px;border-radius:8px;background:var(--primary-container);color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px}
+.chat-head p{font:400 13px/19px 'Manrope',sans-serif;color:var(--muted);margin:.35rem 0 0}
+.chat-indexed{background:#fff;border-radius:999px;padding:.28rem .55rem;color:var(--secondary);font:500 11px/14px 'JetBrains Mono',monospace;white-space:nowrap}
+
 /* Symptom pills — Streamlit/BaseWeb may inject dark defaults, so force readable states */
 [data-testid="stPills"] button,
 [data-testid="stPills"] [role="option"],
