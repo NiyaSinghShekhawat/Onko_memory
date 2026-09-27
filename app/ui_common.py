@@ -90,10 +90,19 @@ div[data-testid="stForm"]{background:#fff!important;border:0!important;border-ra
 .st-key-mood_selector [role="radiogroup"] label:has(input:checked){background:var(--secondary-container)!important}
 .st-key-mood_selector [role="radiogroup"] label p{color:var(--text)!important;font:500 12px/16px 'Manrope',sans-serif!important}
 
-/* Symptom pills */
-[data-testid="stPills"] button{background:var(--surface-container)!important;color:var(--muted)!important;border:0!important;border-radius:999px!important;min-height:1.9rem!important;padding:.3rem .75rem!important}
-[data-testid="stPills"] button p,[data-testid="stPills"] button span{color:inherit!important;-webkit-text-fill-color:currentColor!important}
-[data-testid="stPills"] button[aria-pressed="true"]{background:var(--secondary-container)!important;color:#204f3c!important;font-weight:600!important}
+/* Symptom pills — Streamlit/BaseWeb may inject dark defaults, so force readable states */
+[data-testid="stPills"] button,
+[data-testid="stPills"] [role="option"],
+[data-testid="stPills"] [role="button"]{background:#e7f0eb!important;color:#204f3c!important;-webkit-text-fill-color:#204f3c!important;border:1px solid #d4e3db!important;border-radius:999px!important;min-height:1.95rem!important;padding:.3rem .75rem!important;opacity:1!important}
+[data-testid="stPills"] button *,
+[data-testid="stPills"] [role="option"] *,
+[data-testid="stPills"] [role="button"] *{color:#204f3c!important;-webkit-text-fill-color:#204f3c!important;opacity:1!important}
+[data-testid="stPills"] button[aria-pressed="true"],
+[data-testid="stPills"] [role="option"][aria-selected="true"]{background:var(--secondary-container)!important;color:#123f32!important;-webkit-text-fill-color:#123f32!important;border-color:#9fd5ba!important;font-weight:600!important}
+
+/* Chat panel */
+.onko-chat-shell{background:#fff;border-radius:12px;padding:1.05rem 1.1rem .35rem;box-shadow:0 1px 5px rgba(27,67,50,.055);border:1px solid rgba(193,200,194,.28);margin-bottom:.65rem}
+.onko-chat-label{font:500 11px/14px 'Manrope',sans-serif;color:var(--secondary);text-transform:uppercase;letter-spacing:.05em;margin-top:.15rem}
 
 /* Chat */
 [data-testid="stChatMessage"]{background:#fff!important;border:0!important;border-radius:12px!important;padding:.7rem .85rem!important;box-shadow:0 1px 4px rgba(27,67,50,.04)!important}
