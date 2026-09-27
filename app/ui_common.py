@@ -52,7 +52,7 @@ div[role="radiogroup"] label{background:#f7faf8;border:1px solid #dbe7e1;border-
 def setup_page(title: str) -> None:
     st.set_page_config(page_title=f"OnKo Memory · {title}", page_icon="✣", layout="wide", initial_sidebar_state="collapsed")
     db.init_db()
-    st.markdown(CSS, unsafe_allow_html=True)
+    st.markdown(CSS, unsafe_allow_html=True)\n    st.markdown(CALIBRATION_CSS, unsafe_allow_html=True)
 
 
 def app_header(active: str = "Role Selection", patient: Patient | None = None) -> None:
@@ -85,6 +85,8 @@ def require_role(*roles: Role) -> tuple[Role, Patient]:
 
 
 
+
+CALIBRATION_CSS = """
 <style>
 /* Visual calibration against the Stitch reference */
 html,body,[class*="css"]{font-family:Inter,"Aptos","Segoe UI",sans-serif!important;font-size:15px!important}
@@ -132,3 +134,5 @@ div[role="radiogroup"] [data-baseweb="radio"]>div:first-child{display:none!impor
 [data-testid="stVerticalBlock"]{gap:.72rem}
 .onko-footer{font-size:.6rem!important;margin-top:1.6rem!important}
 </style>
+
+"""
