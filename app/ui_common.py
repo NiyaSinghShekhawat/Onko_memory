@@ -131,6 +131,53 @@ div[role="radiogroup"] [data-baseweb="radio"]>div:first-child{display:none!impor
 [data-testid="stChatMessage"]{font-size:.73rem!important;padding:.5rem .65rem!important;border-radius:10px!important}
 [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]){background:#07533d!important;color:white!important;border-color:#07533d!important}
 [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) p{color:white!important}
+/* Contrast fixes: Streamlit theme-safe text and controls */
+.stButton>button,
+.stButton>button p,
+.stFormSubmitButton>button,
+.stFormSubmitButton>button p{color:#214f42!important;-webkit-text-fill-color:#214f42!important}
+.stButton>button[kind="primary"],
+.stButton>button[kind="primary"] p,
+.stFormSubmitButton>button[kind="primary"],
+.stFormSubmitButton>button[kind="primary"] p{background:#07533d!important;color:#ffffff!important;-webkit-text-fill-color:#ffffff!important;border-color:#07533d!important}
+.onko-memory{background:#e5f1eb!important;color:#315d4f!important}
+.onko-memory b{background:#07533d!important;color:#ffffff!important;-webkit-text-fill-color:#ffffff!important}
+.onko-pill{color:#355d50!important;background:#ffffff!important}
+div[data-baseweb="select"]>div,
+div[data-baseweb="select"] span{color:#173f34!important;-webkit-text-fill-color:#173f34!important}
+.stTextInput input,.stTextArea textarea{color:#173f34!important;-webkit-text-fill-color:#173f34!important}
+.stTextInput input::placeholder,.stTextArea textarea::placeholder{color:#789087!important;-webkit-text-fill-color:#789087!important;opacity:1!important}
+[data-testid="stChatInput"]{background:#edf5f1!important}
+[data-testid="stChatInput"] textarea{color:#173f34!important;-webkit-text-fill-color:#173f34!important}
+[data-testid="stChatInput"] textarea::placeholder{color:#789087!important;-webkit-text-fill-color:#789087!important;opacity:1!important}
+[data-testid="stChatInput"] button{background:#07533d!important;color:#fff!important}
+[data-testid="stChatInput"] button svg{fill:#fff!important;color:#fff!important}
+[data-testid="stPills"] button,
+[data-testid="stPills"] button p,
+[data-testid="stPills"] button span{background:#e3f3ea!important;color:#315f50!important;-webkit-text-fill-color:#315f50!important;border-color:#d1e9dc!important}
+[data-testid="stPills"] button[aria-pressed="true"],
+[data-testid="stPills"] button[aria-pressed="true"] p,
+[data-testid="stPills"] button[aria-pressed="true"] span{background:#afe9cb!important;color:#123f35!important;-webkit-text-fill-color:#123f35!important;border-color:#afe9cb!important}
+
+/* Care-status semantic colors */
+div[role="radiogroup"] label:nth-child(1){background:#e5f5ec!important;border-color:#c9e7d7!important}
+div[role="radiogroup"] label:nth-child(1) p{color:#176146!important;-webkit-text-fill-color:#176146!important}
+div[role="radiogroup"] label:nth-child(2){background:#fff0ef!important;border-color:#f1cbc7!important}
+div[role="radiogroup"] label:nth-child(2) p{color:#a63f37!important;-webkit-text-fill-color:#a63f37!important}
+div[role="radiogroup"] label:nth-child(3){background:#fff4e4!important;border-color:#efd7b4!important}
+div[role="radiogroup"] label:nth-child(3) p{color:#945b16!important;-webkit-text-fill-color:#945b16!important}
+div[role="radiogroup"] label:nth-child(1):has(input:checked){background:#bcebd2!important;border-color:#9eddbc!important}
+div[role="radiogroup"] label:nth-child(2):has(input:checked){background:#ffd7d2!important;border-color:#efaaa2!important}
+div[role="radiogroup"] label:nth-child(3):has(input:checked){background:#ffdba8!important;border-color:#e9bd7d!important}
+div[role="radiogroup"] label:nth-child(1):has(input:checked) p{color:#0c543b!important}
+div[role="radiogroup"] label:nth-child(2):has(input:checked) p{color:#8d2d27!important}
+div[role="radiogroup"] label:nth-child(3):has(input:checked) p{color:#75450f!important}
+
+/* Mood selector should stay neutral/mint instead of inheriting status red/amber */
+div[role="radiogroup"]:has(input[aria-label="Mood"]) label{background:#edf5f1!important;border-color:#d8e7df!important}
+div[role="radiogroup"]:has(input[aria-label="Mood"]) label p{color:#315d4f!important;-webkit-text-fill-color:#315d4f!important}
+div[role="radiogroup"]:has(input[aria-label="Mood"]) label:has(input:checked){background:#afe9cb!important;border-color:#afe9cb!important}
+
 /* Keep forms compact like the reference */
 [data-testid="stVerticalBlock"]{gap:.72rem}
 .onko-footer{font-size:.6rem!important;margin-top:1.6rem!important}
