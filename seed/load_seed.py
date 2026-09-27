@@ -11,7 +11,7 @@ from datetime import date, datetime, timedelta
 
 from core import db, memory
 from core.contracts import Entry
-from seed import ananya, rajesh
+from seed import rajesh
 
 
 def d(offset: int) -> str:
@@ -38,8 +38,7 @@ def load_patient(seed_module) -> None:
 
 def main() -> None:
     db.init_db()
-    for seed_module in (rajesh, ananya):
-        load_patient(seed_module)
+    load_patient(rajesh)
     print(
         "Done. Hindsight builds observations in the background — "
         "give it a few minutes before the demo."
