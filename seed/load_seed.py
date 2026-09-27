@@ -1,36 +1,49 @@
 """
-Load the demo patient into SQLite + Hindsight.  Owner: Shreyan.
+Load the demo patients into SQLite + Hindsight.
 
     python -m seed.load_seed
 
-⚠️ Set HINDSIGHT_BANK_PREFIX=demo in .env before loading the FINAL demo bank.
-   While developing, keep your own prefix (dev-shreyan, ...).
+Set HINDSIGHT_BANK_PREFIX=demo in .env before loading the FINAL demo bank.
+While developing, keep your own prefix (dev-shreyan, dev-samprada, dev-niya).
 """
 
 from datetime import date, datetime, timedelta
 
 from core import db, memory
 from core.contracts import Entry
-from seed import rajesh
+from seed import ananya, rajesh
 
 
 def d(offset: int) -> str:
     return (date.today() + timedelta(days=offset)).isoformat()
 
 
-def main() -> None:
-    db.init_db()
-    p = rajesh.PATIENT
+def load_patient(seed_module) -> None:
+    p = seed_module.PATIENT
     patient = db.create_patient(p["name"], p["age"], p["diagnosis"])
     bank = memory.ensure_bank(patient)
-    db.add_plan_items(patient.id, rajesh.plan_items(d))
+    db.add_plan_items(patient.id, seed_module.plan_items(d))
 
-    print(f"Patient #{patient.id} {patient.name} → bank '{bank}' (Hindsight {'online' if memory.is_online() else 'OFFLINE'})")
-    for i, (offset, hour, source, etype, content) in enumerate(rajesh.ENTRIES, 1):
-        ts = datetime.combine(date.today() + timedelta(days=offset), datetime.min.time()).replace(hour=hour)
+    print(
+        f"Patient #{patient.id} {patient.name} → bank '{bank}' "
+        f"(Hindsight {'online' if memory.is_online() else 'OFFLINE'})"
+    )
+    for i, (offset, hour, source, etype, content) in enumerate(seed_module.ENTRIES, 1):
+        ts = datetime.combine(
+            date.today() + timedelta(days=offset), datetime.min.time()
+        ).replace(hour=hour)
         memory.save_entry(Entry(patient.id, content, source, etype, ts))
-        print(f"  [{i}/{len(rajesh.ENTRIES)}] {ts:%d %b} {etype.value}")
-    print("Done. Hindsight builds observations in the background — give it a few minutes before the demo.")
+        print(f"  [{i}/{len(seed_module.ENTRIES)}] {ts:%d %b} {etype.value}")
+
+
+def main() -> None:
+    db.init_db()
+    for seed_module in (rajesh, ananya):
+        load_patient(seed_module)
+    print(
+        "Done. Hindsight builds observations in the background — "
+        "give it a few minutes before the demo."
+    )
 
 
 if __name__ == "__main__":
