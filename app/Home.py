@@ -1,45 +1,52 @@
-"""Home: pick role + patient (simple demo login). Owner: Niya."""
+"""Home: role + patient selection. Owner: Niya."""
 
-import ui_common  # noqa: F401  (must be first: fixes import path)
-from ui_common import setup_page
-
+import ui_common
+from ui_common import app_footer, app_header, setup_page
 import streamlit as st
-
-from core import config, db, memory
+from core import db, memory
 from core.contracts import Role
 
-setup_page("Home")
-
-st.title("🩺 OnKo")
-st.caption("The doctor decides the care. OnKo remembers the journey.")
-
+setup_page("Role Selection")
 patients = db.list_patients()
+selected = patients[0] if patients else None
+app_header("Role Selection", selected)
+
+st.markdown('<div style="text-align:center;margin:2.2rem 0 1.8rem"><div class="eyebrow">Role Selection</div><div class="hero-title">Welcome to OnKo Memory</div><div class="hero-sub">One continuous memory for your care journey.<br>Preserving continuity across treatments, daily logs, and clinical visits so nothing is lost.</div></div>', unsafe_allow_html=True)
 
 if not patients:
-    st.info("No patients yet. Load the demo patient (`python -m seed.load_seed`) or create one below.")
+    st.info("No patients yet. Load the demo patient using the seed script.")
+else:
+    left, right = st.columns(2, gap="medium")
+    with left:
+        with st.container(border=True):
+            st.markdown('<span class="badge">Daily Companion</span><div class="section-title" style="margin-top:1rem">Patient</div><div class="section-sub">Log your day, check off today\'s care items, record symptoms, and talk to your care companion.</div>', unsafe_allow_html=True)
+            st.markdown('<div class="memory-note">✦ <b>LONGITUDINAL BUFFER</b><br>Remembers your daily logs, medicines, and questions.</div>', unsafe_allow_html=True)
+            st.write("")
+            if st.button("Continue as Patient  →", type="primary", use_container_width=True):
+                st.session_state.role = Role.PATIENT
+                st.session_state.patient = selected
+                memory.ensure_bank(selected)
+                st.switch_page("pages/2_Patient.py")
+    with right:
+        with st.container(border=True):
+            st.markdown('<span class="badge">Clinician & Nurse</span><div class="section-title" style="margin-top:1rem">Care Team</div><div class="section-sub">Update care information, upload lab reports, write notes, and review what happened since the last visit.</div>', unsafe_allow_html=True)
+            st.markdown('<div class="memory-note">⬟ <b>CLINICAL GOVERNANCE</b><br>Structured verification — nothing enters patient memory without your approval.</div>', unsafe_allow_html=True)
+            st.write("")
+            if st.button("Continue as Doctor / Nurse  →", use_container_width=True):
+                st.session_state.role = Role.DOCTOR
+                st.session_state.patient = selected
+                memory.ensure_bank(selected)
+                st.switch_page("pages/1_Doctor.py")
 
-with st.expander("➕ Create a patient", expanded=not patients):
-    with st.form("new_patient"):
-        name = st.text_input("Name")
-        age = st.number_input("Age", min_value=0, max_value=120, value=50)
-        diagnosis = st.text_input("Diagnosis", placeholder="e.g. Colon cancer, on CAPOX")
-        if st.form_submit_button("Create") and name.strip():
-            p = db.create_patient(name.strip(), int(age), diagnosis.strip())
-            memory.ensure_bank(p)
-            st.success(f"Created {p.name}")
-            st.rerun()
+    st.write("")
+    with st.container(border=True):
+        c1, c2 = st.columns([4, 1])
+        with c1:
+            st.markdown(f'<div class="eyebrow">▣ &nbsp; Active Patient Context &nbsp; • &nbsp; {selected.name} &nbsp; <code>{selected.id}</code></div><div style="font-size:.76rem;margin-top:.3rem">{selected.age} yrs &nbsp;·&nbsp; {selected.diagnosis or "Care journey"}<br><span style="color:#60766d">OnKo memory uses patient-specific verified records. All answers and daily careflows adapt to this approved plan.</span></div>', unsafe_allow_html=True)
+        with c2:
+            picked = st.selectbox("Change patient", patients, index=0, format_func=lambda p: p.name, label_visibility="collapsed")
+            if picked.id != selected.id:
+                st.session_state.patient = picked
+                st.rerun()
 
-if patients:
-    st.subheader("Sign in")
-    role = st.radio("I am a…", list(Role), format_func=lambda r: r.value.title(), horizontal=True)
-    patient = st.selectbox("Patient", patients, format_func=lambda p: f"{p.name} · {p.diagnosis}")
-    if st.button("Continue", type="primary"):
-        st.session_state.role = role
-        st.session_state.patient = patient
-        memory.ensure_bank(patient)
-        st.switch_page("pages/2_Patient.py" if role == Role.PATIENT else "pages/1_Doctor.py")
-
-st.divider()
-c1, c2 = st.columns(2)
-c1.metric("Hindsight", "online" if memory.is_online() else "offline (fallback)")
-c2.metric("Groq", "stub mode" if config.USE_STUBS else ("key set" if config.GROQ_API_KEY else "no key"))
+app_footer()
