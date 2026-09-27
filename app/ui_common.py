@@ -83,3 +83,52 @@ def require_role(*roles: Role) -> tuple[Role, Patient]:
         st.stop()
     return role, patient
 
+
+
+<style>
+/* Visual calibration against the Stitch reference */
+html,body,[class*="css"]{font-family:Inter,"Aptos","Segoe UI",sans-serif!important;font-size:15px!important}
+.stApp{background:#f4faf6!important}
+.block-container{max-width:1220px!important;padding-top:.65rem!important}
+.onko-top{padding:.15rem 0 .65rem!important;margin-bottom:1rem!important}
+.onko-brand{font-size:1.05rem!important;letter-spacing:-.02em}
+.onko-brand small{font-size:.62rem!important}
+.onko-nav span{font-size:.68rem!important;padding:.38rem .72rem!important}
+.onko-context{font-size:.64rem!important}
+.hero-title{font-size:2rem!important;line-height:1.08!important;font-weight:700!important;letter-spacing:-.045em!important;margin-top:.55rem!important}
+.hero-title .badge{vertical-align:middle;margin-left:.4rem}
+.hero-sub{font-size:.82rem!important;line-height:1.45!important}
+.section-title{font-size:1.08rem!important;line-height:1.25!important;font-weight:700!important;letter-spacing:-.02em!important}
+.section-sub{font-size:.7rem!important;line-height:1.4!important;color:#657c73!important}
+.badge{font-size:.6rem!important;padding:.2rem .48rem!important}
+.memory-note{font-size:.7rem!important;line-height:1.45!important;background:#e7f2ec!important}
+.source-chip{font-size:.58rem!important}
+p,label,.stCaption{font-size:.75rem!important;line-height:1.42!important}
+[data-testid="stVerticalBlockBorderWrapper"]{border-radius:12px!important;box-shadow:none!important;border-color:#d8e7df!important}
+div[data-testid="stForm"]{padding:.75rem!important;border-radius:12px!important}
+.stButton>button,.stFormSubmitButton>button{font-size:.72rem!important;min-height:2rem!important;border-radius:7px!important}
+/* Match Stitch: secondary actions are pale, not black */
+.stButton>button[kind="secondary"]{background:#f2f7f4!important;color:#315b4d!important;border:1px solid #d8e6df!important}
+.stButton>button[kind="secondary"]:hover{background:#e5f2eb!important;border-color:#bad8c9!important;color:#174c3b!important}
+/* Segmented radio controls: remove Streamlit's heavy black dot */
+div[role="radiogroup"]{gap:.3rem!important}
+div[role="radiogroup"] label{background:#f5f9f7!important;border:1px solid #d9e6df!important;border-radius:7px!important;padding:.28rem .52rem!important}
+div[role="radiogroup"] label:has(input:checked){background:#bdebd4!important;border-color:#bdebd4!important;color:#174c3b!important}
+div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:.72rem!important}
+div[role="radiogroup"] div[data-testid="stRadio"]{gap:.2rem}
+div[role="radiogroup"] [data-baseweb="radio"]>div:first-child{display:none!important}
+/* Symptom chips should be soft mint like the reference, never dark */
+[data-testid="stPills"] button{background:#e3f3ea!important;color:#356454!important;border:1px solid #d1e9dc!important;font-size:.68rem!important;min-height:1.7rem!important;padding:.2rem .55rem!important}
+[data-testid="stPills"] button[aria-pressed="true"]{background:#aee9ca!important;color:#174c3b!important;border-color:#aee9ca!important}
+/* Inputs and chat are pale green in Stitch */
+.stTextInput input,.stTextArea textarea{background:#edf5f1!important;color:#274e42!important;font-size:.75rem!important}
+[data-testid="stChatInput"]{background:#edf5f1!important;border:1px solid #d7e5de!important;border-radius:8px!important}
+[data-testid="stChatInput"] textarea{background:#edf5f1!important;color:#315b4d!important;font-size:.72rem!important}
+[data-testid="stChatInput"] button{background:#0b513d!important;color:white!important}
+[data-testid="stChatMessage"]{font-size:.73rem!important;padding:.5rem .65rem!important;border-radius:10px!important}
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]){background:#07533d!important;color:white!important;border-color:#07533d!important}
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) p{color:white!important}
+/* Keep forms compact like the reference */
+[data-testid="stVerticalBlock"]{gap:.72rem}
+.onko-footer{font-size:.6rem!important;margin-top:1.6rem!important}
+</style>
