@@ -8,7 +8,7 @@ from datetime import date, datetime
 
 import sys, pathlib; sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))  # find ui_common
 import ui_common  # noqa: F401,E402
-from ui_common import require_role, setup_page
+from ui_common import app_footer, app_header, require_role, setup_page
 
 import streamlit as st
 
@@ -21,13 +21,22 @@ setup_page("My care")
 role, patient = require_role(Role.PATIENT)
 today = date.today().isoformat()
 
-st.title(f"🙏 Hi {patient.name.split()[0]}")
+app_header("Patient Workspace", patient)
+
+st.markdown(
+    f'<div class="hero-title">Good morning, {patient.name.split()[0]} <span class="badge">◌ 28 days remembered</span></div>'
+    f'<div class="hero-sub">Let\'s check in for today · {date.today():%A, %d %B}</div>',
+    unsafe_allow_html=True,
+)
 
 STATUS_LABELS = {CheckStatus.DONE: "✅ Done", CheckStatus.MISSED: "❌ Missed", CheckStatus.LATE: "⏰ Late"}
 
 # ─────────────── Today's log ───────────────
 existing = db.get_daily_log(patient.id, today)
-st.subheader(f"Today · {date.today():%d %b}")
+st.markdown(
+    '<div class="section-title">♢ Today\'s Care</div><div class="section-sub">Based on your approved care plan</div>',
+    unsafe_allow_html=True,
+)
 
 if existing:
     st.success("✅ Today's log is done. See you tomorrow!")
@@ -42,7 +51,7 @@ else:
     has_appointment = any(c.kind in (ItemKind.APPOINTMENT, ItemKind.TREATMENT) for c in checklist)
 
     with st.form("daily_log"):
-        st.markdown("**1. Today's checklist**")
+        st.markdown('<span class="badge">TODAY\'S SCHEDULE</span>', unsafe_allow_html=True)
         if not checklist:
             st.caption("Nothing scheduled for today.")
         for i, ci in enumerate(checklist):
@@ -51,12 +60,12 @@ else:
                 horizontal=True, index=None, key=f"ci_{i}",
             ) or CheckStatus.PENDING
 
-        st.markdown("**2. How are you feeling?**")
+        st.markdown('<div class="section-title" style="margin-top:1.2rem">☺ How are you feeling today?</div><div class="section-sub">Daily Reflection</div>', unsafe_allow_html=True)
         mood = st.radio("Mood", MOODS, horizontal=True, index=None, label_visibility="collapsed")
         symptoms = st.pills("Symptoms", SYMPTOMS, selection_mode="multi") or []
         symptom_note = st.text_input("Anything about these symptoms?", placeholder="Nausea started after lunch")
 
-        st.markdown("**3. Tell us anything**")
+        st.markdown('<div class="section-title" style="margin-top:1.2rem">≡ Anything you\'d like us to remember?</div><div class="section-sub">Add anything about your day that may be useful later. OnKo indexes this so your care team and companion understand your context.</div>', unsafe_allow_html=True)
         diary = st.text_area("Diary", label_visibility="collapsed", placeholder="Anything on your mind today…")
 
         visit_note = ""
@@ -64,7 +73,7 @@ else:
             st.markdown("**4. After your appointment**")
             visit_note = st.text_area("What did the doctor tell you today?")
 
-        submitted = st.form_submit_button("Submit today's log", type="primary")
+        submitted = st.form_submit_button("☁  Save today's log", type="primary")
 
     if submitted:
         log = DailyLog(patient.id, today, checklist, mood or "", list(symptoms), symptom_note,
@@ -84,9 +93,7 @@ else:
         st.rerun()
 
 # ─────────────── Chatbot ───────────────
-st.divider()
-st.subheader("💬 Ask OnKo")
-st.caption("I remember your care plan, reports and everything you've logged. Your doctor makes all medical decisions.")
+st.markdown('<div class="section-title">✣ Ask OnKo <span class="badge">● memory indexed</span></div><div class="section-sub">Ask about appointments, medications, past symptoms, or lab results.</div><div class="memory-note">✦ <b>Using your care memory</b> · OnKo recalls your approved plan and past check-ins.</div>', unsafe_allow_html=True)
 
 history = st.session_state.setdefault("chat_history", [])
 for msg in history:
@@ -102,3 +109,5 @@ if prompt := st.chat_input("e.g. When is my next test?"):
             history.append({"role": "assistant", "text": reply.text})
         except Exception as e:
             st.error(f"Something went wrong: {e}")
+
+app_footer()
