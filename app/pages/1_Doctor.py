@@ -10,7 +10,7 @@ from datetime import date
 
 import sys, pathlib; sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))  # find ui_common
 import ui_common  # noqa: F401,E402
-from ui_common import require_role, setup_page
+from ui_common import app_footer, app_header, require_role, setup_page
 
 import pandas as pd
 import streamlit as st
@@ -23,23 +23,27 @@ from core.contracts import TIME_SLOTS, CarePlanItem, Entry, EntryType, ItemKind,
 setup_page("Care team")
 role, patient = require_role(Role.DOCTOR, Role.NURSE)
 
-st.title(f"👩‍⚕️ {patient.name}")
-st.caption(f"{patient.diagnosis} · signed in as {role.value}")
+app_header("Doctor / Nurse Workspace", patient)
+st.markdown(
+    f'<div class="section-title">● {patient.name} <span class="badge">Age: {patient.age}</span> <span class="badge">{patient.id}</span></div>'
+    f'<div class="section-sub">◆ Protocol: {patient.diagnosis or "Active care plan"} &nbsp; · &nbsp; signed in as {role.value}</div>',
+    unsafe_allow_html=True,
+)
 
 tab_plan, tab_report, tab_notes, tab_summary = st.tabs(
-    ["📋 Care plan", "📄 Reports", "📝 Notes", "🕑 Since last visit"]
+    ["▣ Update Care Plan", "⇧ Add Medical Document", "▤ Add Care Note", "≡ Since Last Visit"]
 )
 
 # ─────────────── 1. Care plan ───────────────
 with tab_plan:
-    st.subheader("Enter the care plan")
+    st.markdown('<div class="section-title">▱ Update Care Plan <span class="badge">NATURAL LANG</span></div><div class="section-sub">Enter the plan naturally. OnKo will structure it for clinical review before anything is saved into patient memory.</div>', unsafe_allow_html=True)
     plan_text = st.text_area(
         "Medicines, tests, treatments, appointments",
         height=150,
         placeholder="Capecitabine 1500mg twice daily after food, days 1–14. "
                     "Ondansetron 8mg if nausea. CBC on 3 Oct. Review on 10 Oct.",
     )
-    if st.button("✨ Extract", disabled=not plan_text.strip()):
+    if st.button("Structure Care Plan ✦", disabled=not plan_text.strip()):
         try:
             with st.spinner("Structuring the plan…"):
                 items = extract_care_plan(plan_text, date.today().isoformat())
@@ -50,7 +54,7 @@ with tab_plan:
             st.error(f"Extraction failed: {e}")
 
     if "draft_plan" in st.session_state:
-        st.caption("Review and edit. Nothing is saved until you approve.")
+        st.markdown('<div class="memory-note">⬟ <b>Review required</b> — Nothing is added to the patient\'s care memory until you approve it.</div>', unsafe_allow_html=True)
         edited = st.data_editor(
             st.session_state.draft_plan,
             num_rows="dynamic",
@@ -61,7 +65,7 @@ with tab_plan:
             },
             key="plan_editor",
         )
-        if st.button("✅ Approve & save", type="primary"):
+        if st.button("◉ Approve & Add to Care Memory", type="primary"):
             approved = [
                 CarePlanItem(
                     kind=ItemKind(r["kind"]), name=str(r["name"]), dose=str(r.get("dose") or ""),
@@ -90,9 +94,9 @@ with tab_plan:
 
 # ─────────────── 2. Reports ───────────────
 with tab_report:
-    st.subheader("Upload a report (PDF)")
+    st.markdown('<div class="section-title">⇧ Add Medical Document</div><div class="section-sub">Upload a lab PDF. Extracted information stays in review until you confirm it.</div>', unsafe_allow_html=True)
     pdf = st.file_uploader("PDF", type=["pdf"])
-    if pdf and st.button("🔍 Read report"):
+    if pdf and st.button("◌ Read document"):
         try:
             with st.spinner("Reading…"):
                 st.session_state.draft_report = extract_report(read_pdf_text(pdf.getvalue()))
@@ -108,7 +112,7 @@ with tab_report:
             pd.DataFrame([v.__dict__ for v in rep.values] or [{"name": "", "value": "", "unit": ""}]),
             num_rows="dynamic", width="stretch", key="report_editor",
         )
-        if st.button("✅ Confirm & save", type="primary"):
+        if st.button("✓ Confirm & Save to Memory", type="primary"):
             values = [ReportValue(**r) for r in vals.to_dict("records") if str(r.get("name") or "").strip()]
             text = f"{name} ({rdate or 'date not given'}): " + ", ".join(f"{v.name} {v.value} {v.unit}".strip() for v in values)
             memory.save_entry(Entry(patient.id, text, role, EntryType.REPORT, metadata={"report": name}))
@@ -117,7 +121,7 @@ with tab_report:
 
 # ─────────────── 3. Notes ───────────────
 with tab_notes:
-    st.subheader("Additional information")
+    st.markdown('<div class="section-title">▤ Add Care Note</div><div class="section-sub">Contextual nuances that can inform future conversations.</div>', unsafe_allow_html=True)
     with st.form("notes", clear_on_submit=True):
         note = st.text_area("Note", placeholder="e.g. Patient anxious about hair loss. Family prefers Telugu.")
         if st.form_submit_button("Save note") and note.strip():
@@ -127,9 +131,9 @@ with tab_notes:
 # ─────────────── 4. Since last visit ───────────────
 with tab_summary:
     last = db.last_reviewed(patient.id)
-    st.subheader("Since last visit")
+    st.markdown('<span class="badge">LONGITUDINAL MEMORY SYNTHESIS</span><div class="section-title" style="margin-top:.5rem">Since Last Visit</div><div class="section-sub">OnKo reviews this patient\'s care memory since the last clinical review.</div>', unsafe_allow_html=True)
     st.caption(f"Last reviewed: {last:%d %b %Y, %I:%M %p}" if last else "Not reviewed yet (showing last 30 days).")
-    if st.button("🧠 Generate summary"):
+    if st.button("↻ Generate Memory Summary"):
         with st.spinner("Reading this patient's memory…"):
             st.session_state.summary = chat.since_last_visit(patient.id)
     if st.session_state.get("summary"):
@@ -138,3 +142,5 @@ with tab_summary:
             db.mark_reviewed(patient.id)
             st.session_state.pop("summary")
             st.rerun()
+
+app_footer()
