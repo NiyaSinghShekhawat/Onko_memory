@@ -6,7 +6,7 @@ everything — getting more personal every week — built on [Hindsight](https:/
 
 > *The doctor decides the care. OnKo remembers the journey.*
 
-Team **404 Found** — Samprada Reddy · Niya Singh Shekhawat · Shreyan Samal · Clinical advisor: Dr. Sheelu S Reddy
+Team **Chai++* — Samprada Reddy · Niya Singh Shekhawat · Shreyan Samal · Clinical advisor: Dr. Sheelu S Reddy
 
 ---
 
