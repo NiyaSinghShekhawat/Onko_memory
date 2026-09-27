@@ -87,8 +87,14 @@ with care_col:
                 st.rerun()
 
 with chat_col:
-    st.markdown('<div class="onko-chat-shell"><div class="section-title">✣ Ask OnKo <span class="badge">● memory indexed</span></div><div class="section-sub">Ask about appointments, medications, past symptoms, or lab results.</div><div class="onko-chat-label">Care companion chat</div></div>', unsafe_allow_html=True)
-    with st.container(border=True):
+    with st.container(border=True, height=740, key="onko_chat_panel"):
+        st.markdown(
+            '<div class="chat-head"><div class="chat-head-row">'
+            '<div class="chat-head-title"><span class="chat-head-icon">✣</span>Ask OnKo</div>'
+            '<span class="chat-indexed">● 28 days indexed</span></div>'
+            '<p>Ask about appointments, medications, past symptoms, or lab results.</p></div>',
+            unsafe_allow_html=True,
+        )
         st.markdown('<div class="memory-note">✦ <b>Using your care memory</b><br>OnKo recalls your approved plan and past check-ins.</div>', unsafe_allow_html=True)
         st.caption("Try asking")
         q1, q2 = st.columns(2)
