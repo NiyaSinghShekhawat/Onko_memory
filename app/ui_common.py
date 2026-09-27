@@ -13,7 +13,7 @@ from core.contracts import Patient, Role  # noqa: E402
 
 CSS = """
 <style>
-:root{--ink:#063f2f;--green:#004b35;--mint:#b9efd3;--soft:#edf7f1;--canvas:#f5fbf7;--line:#dcebe3;--muted:#60756c}
+:root{--ink:#012d1d;--green:#012d1d;--mint:#bceed3;--soft:#edf6f0;--canvas:#f3fbf6;--line:#dce4df;--muted:#414844;--error:#93000a;--error-bg:#ffdad6;--late:#693c00;--late-bg:#ffdcbe}
 html,body,[class*="css"]{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
 .stApp{background:var(--canvas)}
 [data-testid="stHeader"]{background:transparent}
@@ -26,12 +26,30 @@ hr{border-color:var(--line)!important}
 [data-testid="stVerticalBlockBorderWrapper"]{background:#fff;border:1px solid var(--line)!important;border-radius:13px!important;box-shadow:0 1px 2px rgba(0,58,40,.035)}
 div[data-testid="stForm"]{border:1px solid var(--line);border-radius:13px;background:#fff;padding:1rem}
 .stButton>button,.stFormSubmitButton>button{border-radius:8px;min-height:2.25rem;font-weight:600;border:1px solid var(--line)}
-.stButton>button[kind="primary"],.stFormSubmitButton>button[kind="primary"]{background:var(--green);color:#fff;border-color:var(--green)}
-div[data-baseweb="select"]>div,.stTextInput input,.stTextArea textarea{background:#eef7f2!important;border-color:var(--line)!important;border-radius:8px!important}
+.stButton>button,.stFormSubmitButton>button{color:var(--ink)!important;background:#e7f0eb!important}
+.stButton>button p,.stButton>button span,.stFormSubmitButton>button p,.stFormSubmitButton>button span{color:var(--ink)!important}
+.stButton>button[kind="primary"],.stFormSubmitButton>button[kind="primary"]{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important}
+.stButton>button[kind="primary"] p,.stButton>button[kind="primary"] span,.stFormSubmitButton>button[kind="primary"] p,.stFormSubmitButton>button[kind="primary"] span{color:#fff!important}
+div[data-baseweb="select"]>div,.stTextInput input,.stTextArea textarea{background:#eef7f2!important;border-color:var(--line)!important;border-radius:8px!important;color:#151d1a!important;-webkit-text-fill-color:#151d1a!important}
+.stTextInput input::placeholder,.stTextArea textarea::placeholder{color:#66756e!important;opacity:1!important}
 div[role="radiogroup"]{gap:.25rem}
-div[role="radiogroup"] label{background:#f4f8f6;border:1px solid #e6efe9;border-radius:8px;padding:.22rem .5rem}
+div[role="radiogroup"] label{background:#f4f8f6;border:1px solid #e6efe9;border-radius:8px;padding:.22rem .5rem;color:#151d1a!important}
+div[role="radiogroup"] label p,div[role="radiogroup"] label span{color:#151d1a!important}
+div[role="radiogroup"] label:has(input:checked){background:var(--mint)!important;border-color:#8cc8aa!important}
+div[role="radiogroup"] label:has(input:checked) p,div[role="radiogroup"] label:has(input:checked) span{color:#204f3c!important;font-weight:700!important}
+[data-testid="stPills"] button{background:#e7f0eb!important;border:1px solid #c1c8c2!important}
+[data-testid="stPills"] button p,[data-testid="stPills"] button span{color:#151d1a!important}
+[data-testid="stPills"] button[aria-pressed="true"]{background:var(--mint)!important;border-color:#8cc8aa!important}
+[data-testid="stPills"] button[aria-pressed="true"] p,[data-testid="stPills"] button[aria-pressed="true"] span{color:#204f3c!important;font-weight:600!important}
 [data-testid="stFileUploaderDropzone"]{background:#eef7f2;border:1px dashed #b8d5c7;border-radius:12px}
 [data-testid="stChatMessage"]{background:#fff;border:1px solid #e5eee9;border-radius:12px;padding:.55rem .7rem;margin:.45rem 0}
+[data-testid="stChatMessage"] p,[data-testid="stChatMessage"] span{color:#151d1a!important}
+[data-testid="stChatInput"] textarea{color:#151d1a!important;-webkit-text-fill-color:#151d1a!important}
+[data-testid="stChatInput"] textarea::placeholder{color:#66756e!important;opacity:1!important}
+[data-testid="stChatInput"] button{background:var(--green)!important;color:#fff!important}
+[data-testid="stChatInput"] button svg{fill:#fff!important}
+[data-testid="stToggle"] label,[data-testid="stToggle"] p,[data-testid="stToggle"] span{color:#151d1a!important;opacity:1!important}
+[data-testid="stToggle"] [role="switch"][aria-checked="true"]{background:var(--green)!important}
 [data-testid="stMetric"]{background:#eef7f2;border:1px solid #e1eee7;padding:.55rem .7rem;border-radius:8px}
 .stAlert{border-radius:9px}
 .onko-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.15rem 0 .8rem;border-bottom:1px solid #e4f0e9;margin-bottom:1.2rem}
