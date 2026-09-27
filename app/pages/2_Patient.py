@@ -87,7 +87,7 @@ with care_col:
                 st.rerun()
 
 with chat_col:
-    with st.container(border=True, height=740, key="onko_chat_panel"):
+    with st.container(border=True, key="onko_chat_panel"):
         st.markdown(
             '<div class="chat-head"><div class="chat-head-row">'
             '<div class="chat-head-title"><span class="chat-head-icon">✣</span>Ask OnKo</div>'
