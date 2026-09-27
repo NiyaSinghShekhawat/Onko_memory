@@ -100,9 +100,9 @@ div[data-testid="stForm"]{background:#fff!important;border:0!important;border-ra
 [class*="st-key-mood_selector"] [role="radiogroup"] label:has(input:checked) p{color:#204f3c!important;-webkit-text-fill-color:#204f3c!important}
 
 /* Full-height Ask OnKo companion, matching Stitch's 740px right rail */
-[class*="st-key-onko_chat_panel"]{min-height:740px!important;background:#fff!important;border-radius:12px!important;border:0!important;box-shadow:0 5px 18px rgba(27,67,50,.10)!important;overflow:hidden!important}
-[class*="st-key-onko_chat_panel"] > div{min-height:100%!important}
-[class*="st-key-onko_chat_panel"] [data-testid="stVerticalBlock"]{gap:.8rem!important}
+[class*="st-key-onko_chat_panel"]{min-height:740px!important;background:#fff!important;border-radius:12px!important;border:0!important;box-shadow:0 5px 18px rgba(27,67,50,.10)!important;overflow:visible!important}
+[class*="st-key-onko_chat_panel"] > div{min-height:740px!important}
+[class*="st-key-onko_chat_panel"] [data-testid="stVerticalBlock"]{min-height:700px!important;gap:.8rem!important}
 .chat-head{margin:-.75rem -.75rem .25rem!important;padding:1rem!important;background:var(--surface-container)!important;border-radius:10px 10px 0 0}
 .chat-head-row{display:flex;align-items:center;justify-content:space-between;gap:.75rem}
 .chat-head-title{display:flex;align-items:center;gap:.55rem;font:600 18px/26px 'Manrope',sans-serif;color:var(--primary)}
