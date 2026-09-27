@@ -52,7 +52,8 @@ div[role="radiogroup"] label{background:#f7faf8;border:1px solid #dbe7e1;border-
 def setup_page(title: str) -> None:
     st.set_page_config(page_title=f"OnKo Memory · {title}", page_icon="✣", layout="wide", initial_sidebar_state="collapsed")
     db.init_db()
-    st.markdown(CSS, unsafe_allow_html=True)\n    st.markdown(CALIBRATION_CSS, unsafe_allow_html=True)
+    st.markdown(CSS, unsafe_allow_html=True)
+    st.markdown(CALIBRATION_CSS, unsafe_allow_html=True)
 
 
 def app_header(active: str = "Role Selection", patient: Patient | None = None) -> None:
