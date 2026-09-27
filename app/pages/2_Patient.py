@@ -58,7 +58,7 @@ with care_col:
                     ) or CheckStatus.PENDING
 
                 st.markdown('<div class="section-title" style="margin-top:1rem">☺ How are you feeling today?</div><div class="section-sub">Daily Reflection</div>', unsafe_allow_html=True)
-                mood = st.radio("Mood", MOODS, horizontal=True, index=None, label_visibility="collapsed")
+                mood = st.radio("Mood", MOODS, horizontal=True, index=None, key="mood_selector", label_visibility="collapsed")
                 symptoms = st.pills("Anything you're experiencing?", SYMPTOMS, selection_mode="multi") or []
                 symptom_note = st.text_input("Add a little more detail", placeholder="e.g. Nausea started after lunch")
 
